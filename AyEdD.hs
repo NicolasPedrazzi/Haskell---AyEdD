@@ -1,4 +1,5 @@
 
+
 --Algorítmos y Estructuras de Datos I
 --Práctico 0:
 
@@ -52,8 +53,11 @@ todosPos (x:xs) = (x > 0) && (todosPos xs)
 
 --LAboratorio 4:
 
-data Color = Rojo | Amarillo | Verde | Azul   deriving (Show, Eq)
-data Forma = Triangulo | Cuadrado | Rombo | Circulo deriving (Show, Eq)
+data Color = Rojo | Amarillo | Verde | Azul   
+                                           deriving (Show, Eq)
+data Forma = Triangulo | Cuadrado | Rombo | Circulo 
+                                           deriving (Show, Eq)
+
 type Figura = (Forma, Color, Int)
 
 tam :: Figura -> Int
@@ -83,14 +87,9 @@ tamMenorCinco :: [Figura] -> Bool
 tamMenorCinco [] = True
 tamMenorCinco ((a, b, c):xs) = (c < 5) && tamMenorCinco xs
 
-
-triangulosRojos :: [Figura] -> Bool                                                             --(Analizar ambas versiones)
+triangulosRojos :: [Figura] -> Bool
 triangulosRojos [] = True
-triangulosRojos ((a, b, c):xs) = ((a == Triangulo) && (b == Rojo)) && triangulosRojos xs  
-
-tRbis :: [Figura] -> Bool
-tRbis [] = True
-tRbis ((a, b, c):xs) | ((a == Triangulo) && (b == Verde)) = False
+triangulosRojos ((a, b, c):xs) | ((a == Triangulo) && (b == Verde)) = False
                      | ((a == Triangulo) && (b == Amarillo)) = False
                      | ((a == Triangulo) && (b == Azul)) = False
                      | otherwise = True 
@@ -100,15 +99,62 @@ existeCuadVerde :: [Figura] -> Bool
 existeCuadVerde [] = False
 existeCuadVerde ((a, b, c):xs) = ((a == Cuadrado) && (b == Verde)) || existeCuadVerde xs
 
+--Todos los circulos son azules y de tamaño menor a 10:
+--Funcion auxiliar de tCAm10
+cAm10 :: Figura -> Bool
+cAm10 (a, b, c) = (a == Circulo) && (b == Azul) && (c < 10)
 
-existeCircAzulmenor10 :: [Figura] -> Bool                                           --(No cumple la especificación (Preguntar))
-existeCircAzulmenor10 [] = False
-existeCircAzulmenor10 ((a, b, c):xs) = ((a == Circulo) && (b == Azul) && (c < 10)) || existeCircAzulmenor10 xs
+tCAm10 :: [Figura] -> Bool
+tCAm10 [] = True
+tCAm10 ((Circulo, b, c):xs) = cAm10 (Circulo, b, c) && tCAm10 xs
+tCAm10 ((a, b, c):xs) = tCAm10 xs
+
+--Ningún triángulo de xs es azul:
+--Función auxiliar de nTAL
+nTA :: Figura -> Bool
+nTA (a, b, c) = (a == Triangulo) && (b /= Azul) 
+
+nTAL :: [Figura] -> Bool
+nTAL [] = True
+nTAL ((Triangulo ,b ,c):xs) = nTA (Triangulo, b ,c) && nTAL xs
+nTAL ((a, b, c):xs) = nTAL xs
+
+--En xs no hay circulos amarillos ni verdes:
+--Función auxiliar de nCAVL
+nCAV :: Figura -> Bool
+nCAV (a, b, c) = (a == Circulo) && (b /= Amarillo && b /= Verde)
+
+nCAVL :: [Figura] -> Bool
+nCAVL [] = True
+nCAVL ((Circulo, b, c):xs) = nCAV (Circulo, b, c) && nCAVL xs
+nCAVL ((a, b, c):xs) = nCAVL xs
+
+--Existe (al menos) un cuadrado de tamaño menor a 5 en xs:
+eCm5 :: [Figura] -> Bool
+eCm5 [] = False
+eCm5 ((Cuadrado, b, c):xs) = (c < 5) || eCm5 xs
+eCm5 ((a, b, c):xs) = eCm5 xs
+
+--Si hay circulos rojos en xs entonces hay cuadrados rojos
+--Funciones auxiliares de hCReCR
+hCiR :: Figura -> Bool
+hCiR (a, b, c) = (a == Circulo) && (b == Rojo)
+hCuR :: Figura -> Bool
+hCuR (a, b, c) = (a == Cuadrado) && (b == Rojo)
+    --Preguntar en clase (al probar con listas que conotienen un circulo Rojo y no hay un Cuadrado Rojo devuelve "True" y vicebersa)
+    --Es un problema con los datos que ingrese el usuario?
+    --Debo inculir un constructor en la funcion para que se agregue un cuadrado o un circulo en caso de no haberlo?
+hCReCR :: [Figura] -> Bool
+hCReCR [] = True
+hCReCR ((Circulo, b , c):xs) = hCiR (Circulo, b, c) && hCReCR xs
+hCReCR ((Cuadrado, b, c):xs) = hCuR (Cuadrado, b ,c) && hCReCR xs
+hCReCR ((a, b, c):xs) = hCReCR xs
 
 
-noTrianguloAzul :: [Figura] -> Bool                                                 --(No cumple la especificación (Preguntar))
-noTrianguloAzul [] = True
-noTrianguloAzul ((a, b, c):xs) = ((a == Triangulo) && (b /= Azul)) && noTrianguloAzul xs
+
+
+
+
 
 
 --Práctico 1:
