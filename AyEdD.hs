@@ -1,3 +1,6 @@
+import Control.Monad.Cont (cont)
+import Distribution.Simple.Program.HcPkg (list)
+import Distribution.InstalledPackageInfo (InstalledPackageInfo(indefinite))
 
 
 --Algorítmos y Estructuras de Datos I
@@ -152,12 +155,43 @@ hCReCR ((a, b, c):xs) = hCReCR xs
 
 
 
-
-
-
-
-
 --Práctico 1:
+
+--Laboratorio 1:
+
+sumTam :: [Figura] -> Int
+sumTam [] = 0
+sumTam ((a, b, c):xs) = c + sumTam xs
+
+prodTam :: [Figura] -> Int
+prodTam [] = 1
+prodTam ((a, b, c):xs) = c * prodTam xs
+
+contRombo :: [Figura] -> Int
+contRombo [] = 0
+contRombo ((a, b, c):xs) | a == Rombo = 1 + contRombo xs
+                         | otherwise = contRombo xs
+
+--Funcion auxiliar "contRomboRojo":
+romboRojo :: Figura -> Bool
+romboRojo (a, b, c) = (a == Rombo) && (b == Rojo)
+
+contRomboRojo :: [Figura] -> Int
+contRomboRojo [] = 0
+contRomboRojo ((a, b, c):xs) | romboRojo (a, b, c) = 1 + contRomboRojo xs
+                             | otherwise = contRomboRojo xs
+
+--Laboratorio 2:
+
+sumaFiguras :: [Figura] -> Bool
+sumaFiguras [] = True
+sumaFiguras (x:xs) = sumTam xs  > 10
+
+listFigmen7 :: [Figura] -> Bool
+listFigmen7 [] = True
+listFigmen7 ((a, b, c):xs) = c > 7 && listFigmen7 xs
+
+--Laboratorio 4:
 
 sumaLista :: [Int] -> Int
 sumaLista [] = 0
@@ -178,6 +212,48 @@ factorial n = n*(factorial (n-1))
 promedio :: [Int] -> Int
 promedio [] = 0
 promedio (x:xs) = div (sumatoria xs) (length xs) 
+
+--Laboratorio 6: 
+
+
+elemMasGrande :: [Int] -> Int -> Bool
+elemMasGrande [] n = True
+elemMasGrande (x:xs) n = (n >= x) && elemMasGrande xs n
+ 
+prodPar :: [Int] -> Int
+prodPar [] = 1
+prodPar (x:xs) | mod x 2 == 0 = x * prodPar xs
+               |otherwise = prodPar xs
+
+sumaPosPar :: [Int] -> Int
+sumaPosPar [] = 0
+sumaPosPar [x] = x
+sumaPosPar (x:y:xs) = x + sumaPosPar xs
+
+--Laboratorio 7:
+data Carrera = Matematica | Fisica | Computacion | Astronomia 
+             deriving (Show, Eq)
+
+titulo :: Carrera -> String
+titulo Matematica = "Licenciatura en Matematica"
+titulo Fisica = "Licenciatura en Fisica"
+titulo Computacion = "Licenciatura en Computacion"
+titulo Astronomia = "Licenciatura en Astronomia"
+
+data NotaBasica = Do | Re | Mi | Fa | Sol | La | Si 
+
+cifradoAmericano :: NotaBasica -> Char
+cifradoAmericano Do = 'C'
+cifradoAmericano Re = 'D'
+cifradoAmericano Mi = 'E'
+cifradoAmericano Fa = 'F'
+cifradoAmericano Sol = 'G'
+cifradoAmericano La = 'A'
+cifradoAmericano Si = 'B'
+
+
+
+
 
 
 
