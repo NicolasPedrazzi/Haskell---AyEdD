@@ -1,7 +1,3 @@
-import Control.Monad.Cont (cont)
-import Distribution.Simple.Program.HcPkg (list)
-import Distribution.InstalledPackageInfo (InstalledPackageInfo(indefinite))
-
 
 --Algorítmos y Estructuras de Datos I
 --Práctico 0:
@@ -250,10 +246,6 @@ cifradoAmericano Fa = 'F'
 cifradoAmericano Sol = 'G'
 cifradoAmericano La = 'A'
 cifradoAmericano Si = 'B'
-
-
-
-
 
 
 
